@@ -11,9 +11,9 @@ import numpy as np
 import pandas as pd
 from support import *
 
-train = np.load("np_train_data.npy")
-ucb_matrix = np.load("ucb_matrix_test.npy")
-ui_matrix = np.load("ui_matrix.npy")
+train = np.load("thesis-data/np_train_data.npy")
+ucb_matrix = np.load("thesis-data/ucb_matrix_test.npy")
+ui_matrix = np.load("thesis-data/ui_matrix.npy")
 
 
 brand_num = 254 
