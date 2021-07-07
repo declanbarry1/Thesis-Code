@@ -16,13 +16,13 @@ np.random.shuffle(train_data)
 #counter_size = counter_data.shape[0]
 #np.random.shuffle(counter_data)
 
-test_data = np.load("fa_test_data.npy")
+#test_data = np.load("fa_test_data.npy")
 
 #test_data = test_data[:, 1:4]
 
-test_data = np.unique(test_data, axis=0)
+#test_data = np.unique(test_data, axis=0)
 
-ia_matrix = np.load("fa_ia_matrix.npy")
+#ia_matrix = np.load("fa_ia_matrix.npy")
 user_emb_matrix = np.load("fa_ua_matrix.npy")
 
 def get_popular_item(top_k):
