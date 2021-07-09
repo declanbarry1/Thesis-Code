@@ -12,8 +12,8 @@ import evall
 
 train_data = np.load("fa_train_data.npy")
 np.random.shuffle(train_data)
-#counter_data = np.load("fa_train_counter_examples.npy")
-#counter_size = counter_data.shape[0]
+counter_data = np.load("fa_train_counter_examples.npy")
+counter_size = counter_data.shape[0]
 #np.random.shuffle(counter_data)
 
 #test_data = np.load("fa_test_data.npy")
@@ -22,7 +22,7 @@ np.random.shuffle(train_data)
 
 #test_data = np.unique(test_data, axis=0)
 
-#ia_matrix = np.load("fa_ia_matrix.npy")
+ia_matrix = np.load("fa_ia_matrix.npy")
 user_emb_matrix = np.load("fa_ua_matrix.npy")
 
 def get_popular_item(top_k):
@@ -51,7 +51,7 @@ def get_batchdata(start_index, end_index):
     productgroup = [x[14] for x in batch_data]
     user_emb_batch = user_emb_matrix[user]
     return country, postcode,  pricetype, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
-        itemseason, productgroup, user_emb_batch
+        itemseason, productgroup, user_emb_batch, item
 
 def get_counter_batch(start_index, end_index):
     '''get counter examples'''
@@ -75,7 +75,7 @@ def get_counter_batch(start_index, end_index):
     productgroup = [x[14] for x in batch_data]
     user_emb_batch = user_emb_matrix[user]
     return country, postcode,  pricetype, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
-        itemseason, productgroup, user_emb_batch
+        itemseason, productgroup, user_emb_batch, item
 
     
 def get_testdata(start, end):
@@ -97,7 +97,7 @@ def get_testdata(start, end):
     itemseason = x[13] 
     productgroup = x[14] 
     return country, postcode,  pricetype, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
-        itemseason, productgroup
+        itemseason, productgroup, item 
 
 
 #user_sqrt = np.sqrt(np.sum(np.multiply(user_emb_matrix, user_emb_matrix), axis=1))
@@ -109,67 +109,52 @@ def get_intersection_similar_user(G_user, k):
     return intersection_rank_matrix[:, 0:k]
 
 
-def test(test_item_batch, test_G_user):
+def test(item_batch, test_G_user):
     
-    k_value = 20
-    test_BATCH_SIZE = np.size(test_item_batch)
-    
-    test_intersection_similar_user = get_intersection_similar_user(test_G_user, k_value)
+    k = 20
+    test_BATCH_SIZE = np.size(item_batch)
+    intersection_similar_user = get_intersection_similar_user(G_user, k)
     count = 0
-    for test_i, test_userlist in zip(test_item_batch, test_intersection_similar_user):       
-        for test_u in test_userlist:
-            
-            if ui_matrix[test_u, test_i] == 1:
+    for i, user_list in zip(item_batch, intersection_similar_user):       
+        for u in user_list:
+            if np.sum(fa_ia_matrix[i] + fa_user_emb_matrix[u] == 2) >=9:
                 count = count + 1            
-    p_at_20 = round(count/(test_BATCH_SIZE * k_value), 4)
-           
-    ans = 0.0
+    p_at_20 = round(count/(test_BATCH_SIZE * k), 4)
+
     RS = []
-    for test_i, test_userlist in zip(test_item_batch, test_intersection_similar_user):  
-        r=[]
-        for user in test_userlist:
-            r.append(ui_matrix[user][test_i])
-        RS.append( r)
-#    print('MAP @ ',k_value,' is ',  evall.mean_average_precision(RS) )  
-    M_at_20 = evall.mean_average_precision(RS)
-  
     ans = 0.0
-    for test_i, test_userlist in zip(test_item_batch, test_intersection_similar_user):  
+    for i, user_list in zip(item_batch, intersection_similar_user):           
         r=[]
-        for user in test_userlist:
-            r.append(ui_matrix[user][test_i])
-        ans = ans + evall.ndcg_at_k(r, k_value, method=1)
-#    print('ndcg @ ',k_value,' is ', ans/test_BATCH_SIZE) 
+        for user in user_list:
+            if np.sum(fa_ia_matrix[i] + fa_user_emb_matrix[user] == 2) >=9:
+                r.append(1)
+            else:
+                r.append(0)
+        ans = ans + evall.ndcg_at_k(r, k, method=1)
+        RS.append(r)
     G_at_20 = ans/test_BATCH_SIZE
-    k_value = 10 
+    M_at_20 = evall.mean_average_precision(RS)
     
+    k = 10
+    intersection_similar_user = get_fa_intersection_similar_user(G_user, k)
     count = 0
-    for test_i, test_userlist in zip(test_item_batch, test_intersection_similar_user):       
-        for test_u in test_userlist[:k_value]:
-            
-            if ui_matrix[test_u, test_i] == 1:
+    for i, user_list in zip(item_batch, intersection_similar_user):       
+        for u in user_list:
+            if np.sum(fa_ia_matrix[i] + fa_user_emb_matrix[u] == 2) >=9:
                 count = count + 1            
-    p_at_10 = round(count/(test_BATCH_SIZE * k_value), 4)
-         
-    ans = 0.0
+    p_at_10 = round(count/(test_BATCH_SIZE * k), 4)
+
     RS = []
-    for test_i, test_userlist in zip(test_item_batch, test_intersection_similar_user):  
-        r=[]
-        for user in test_userlist[:k_value]:
-            r.append(ui_matrix[user][test_i])
-        RS.append( r)
-#    print('MAP @ ',k_value,' is ',  evall.mean_average_precision(RS) ) 
-    M_at_10 = evall.mean_average_precision(RS)
-    
-
     ans = 0.0
-    for test_i, test_userlist in zip(test_item_batch, test_intersection_similar_user):  
+    for i, user_list in zip(item_batch, intersection_similar_user):           
         r=[]
-        for user in test_userlist[:k_value]:
-            r.append(ui_matrix[user][test_i])
-        ans = ans + evall.ndcg_at_k(r, k_value, method=1)
-#    print('ndcg @ ',k_value,' is ', ans/test_BATCH_SIZE) 
+        for user in user_list:
+            if np.sum(fa_ia_matrix[i] + fa_user_emb_matrix[user] == 2) >=9:
+                r.append(1)
+            else:
+                r.append(0)
+        ans = ans + evall.ndcg_at_k(r, k, method=1)
+        RS.append(r)
     G_at_10 = ans/test_BATCH_SIZE
-  
-
+    M_at_10 = evall.mean_average_precision(RS)
     return p_at_10,p_at_20,M_at_10,M_at_20,G_at_10,G_at_20
