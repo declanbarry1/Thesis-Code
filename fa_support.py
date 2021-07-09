@@ -38,7 +38,7 @@ def get_batchdata(start_index, end_index):
     country = [x[1] for x in batch_data]
     postcode = [x[2] for x in batch_data]
     item = [x[3] for x in batch_data]
-    pricetype = [x[4] for x in batch_data]
+    #pricetype = [x[4] for x in batch_data]
     loyal = [x[5] for x in batch_data]
     gender = [x[6] for x in batch_data]
     brand_id = [x[7] for x in batch_data]
@@ -50,7 +50,7 @@ def get_batchdata(start_index, end_index):
     itemseason = [x[13] for x in batch_data]
     productgroup = [x[14] for x in batch_data]
     user_emb_batch = user_emb_matrix[user]
-    return country, postcode,  pricetype, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
+    return country, postcode, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
         itemseason, productgroup, user_emb_batch, item
 
 def get_counter_batch(start_index, end_index):
@@ -59,23 +59,17 @@ def get_counter_batch(start_index, end_index):
     end_index = end_index % counter_size
     batch_data = counter_data[start_index: end_index]
     user = [x[0] for x in batch_data]
-    country = [x[1] for x in batch_data]
-    postcode = [x[2] for x in batch_data]
-    item = [x[3] for x in batch_data]
-    pricetype = [x[4] for x in batch_data]
-    loyal = [x[5] for x in batch_data]
-    gender = [x[6] for x in batch_data]
-    brand_id = [x[7] for x in batch_data]
-    category = [x[8] for x in batch_data]
-    colour = [x[9] for x in batch_data]
-    divisioncode = [x[10] for x in batch_data]
-    itemcategorycode = [x[11] for x in batch_data]
-    itemfamilycode = [x[12] for x in batch_data]
-    itemseason = [x[13] for x in batch_data]
-    productgroup = [x[14] for x in batch_data]
+    brand_id = [x[1] for x in batch_data]
+    category = [x[2] for x in batch_data]
+    colour = [x[3] for x in batch_data]
+    divisioncode = [x[4] for x in batch_data]
+    itemcategorycode = [x[5] for x in batch_data]
+    itemfamilycode = [x[6] for x in batch_data]
+    itemseason = [x[7] for x in batch_data]
+    productgroup = [x[8] for x in batch_data]
     user_emb_batch = user_emb_matrix[user]
-    return country, postcode,  pricetype, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
-        itemseason, productgroup, user_emb_batch, item
+    return  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
+        itemseason, productgroup, user_emb_batch
 
     
 def get_testdata(start, end):
@@ -85,7 +79,7 @@ def get_testdata(start, end):
     country = x[1]
     postcode = x[2]
     item = x[3] 
-    pricetype = x[4] 
+    #pricetype = x[4] 
     loyal = x[5] 
     gender = x[6]
     brand_id = x[7] 
@@ -96,7 +90,7 @@ def get_testdata(start, end):
     itemfamilycode = x[12] 
     itemseason = x[13] 
     productgroup = x[14] 
-    return country, postcode,  pricetype, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
+    return country, postcode, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
         itemseason, productgroup, item 
 
 
