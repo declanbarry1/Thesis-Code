@@ -14,13 +14,13 @@ train_data = np.load("fa_train_data.npy")
 np.random.shuffle(train_data)
 counter_data = np.load("fa_train_counter_examples.npy")
 counter_size = counter_data.shape[0]
-#np.random.shuffle(counter_data)
+np.random.shuffle(counter_data)
 
-#test_data = np.load("fa_test_data.npy")
+test_data = np.load("fa_test_data.npy")
 
 #test_data = test_data[:, 1:4]
 
-#test_data = np.unique(test_data, axis=0)
+test_data = np.unique(test_data, axis=0)
 
 ia_matrix = np.load("fa_ia_matrix.npy")
 user_emb_matrix = np.load("fa_ua_matrix.npy")
@@ -75,21 +75,21 @@ def get_counter_batch(start_index, end_index):
 def get_testdata(start, end):
     '''get test samples'''
     x = test_data[start:end]
-    user = x[0]
-    country = x[1]
-    postcode = x[2]
-    item = x[3] 
+    user = x[:,0]
+    country = x[:,1]
+    postcode = x[:,2]
+    item = x[:,3] 
     #pricetype = x[4] 
-    loyal = x[5] 
-    gender = x[6]
-    brand_id = x[7] 
-    category = x[8]
-    colour = x[9] 
-    divisioncode = x[10] 
-    itemcategorycode = x[11] 
-    itemfamilycode = x[12] 
-    itemseason = x[13] 
-    productgroup = x[14] 
+    loyal = x[:,5] 
+    gender = x[:,6]
+    brand_id = x[:,7] 
+    category = x[:,8]
+    colour = x[:,9] 
+    divisioncode = x[:,10] 
+    itemcategorycode = x[:,11] 
+    itemfamilycode = x[:,12] 
+    itemseason = x[:,13] 
+    productgroup = x[:,14] 
     return country, postcode, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
         itemseason, productgroup, item 
 
