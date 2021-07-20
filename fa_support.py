@@ -24,7 +24,7 @@ test_data = np.unique(test_data, axis=0)
 
 ia_matrix = np.load("new_fa_ia_matrix.npy")
 user_emb_matrix = np.load("new_fa_ua_matrix.npy")
-item_emb_matrix = np.load("user_attributes.npy")
+item_emb_matrix = np.load("item_attributes.npy")
 
 ui_matrix = np.load("fa_ui_matrix.npy")
 def get_popular_item(top_k):
@@ -41,16 +41,16 @@ def get_batchdata(start_index, end_index):
     postcode = [x[2] for x in batch_data]
     item = [x[3] for x in batch_data]
     #pricetype = [x[4] for x in batch_data]
-    loyal = [x[5] for x in batch_data]
-    gender = [x[6] for x in batch_data]
-    brand_id = [x[7] for x in batch_data]
-    category = [x[8] for x in batch_data]
-    colour = [x[9] for x in batch_data]
-    divisioncode = [x[10] for x in batch_data]
-    itemcategorycode = [x[11] for x in batch_data]
-    itemfamilycode = [x[12] for x in batch_data]
-    itemseason = [x[13] for x in batch_data]
-    productgroup = [x[14] for x in batch_data]
+    loyal = [x[4] for x in batch_data]
+    gender = [x[5] for x in batch_data]
+    brand_id = [x[6] for x in batch_data]
+    category = [x[7] for x in batch_data]
+    colour = [x[8] for x in batch_data]
+    divisioncode = [x[9] for x in batch_data]
+    itemcategorycode = [x[10] for x in batch_data]
+    itemfamilycode = [x[11] for x in batch_data]
+    itemseason = [x[12] for x in batch_data]
+    productgroup = [x[13] for x in batch_data]
     user_emb_batch = user_emb_matrix[user]
     item_emb_batch = item_emb_matrix[item]
     return country, postcode, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
@@ -83,16 +83,16 @@ def get_testdata(start, end):
     postcode = x[:,2]
     item = x[:,3] 
     #pricetype = x[4] 
-    loyal = x[:,5] 
-    gender = x[:,6]
-    brand_id = x[:,7] 
-    category = x[:,8]
-    colour = x[:,9] 
-    divisioncode = x[:,10] 
-    itemcategorycode = x[:,11] 
-    itemfamilycode = x[:,12] 
-    itemseason = x[:,13] 
-    productgroup = x[:,14] 
+    loyal = x[:,4] 
+    gender = x[:,5]
+    brand_id = x[:,6] 
+    category = x[:,7]
+    colour = x[:,8] 
+    divisioncode = x[:,9] 
+    itemcategorycode = x[:,10] 
+    itemfamilycode = x[:,11] 
+    itemseason = x[:,12] 
+    productgroup = x[:,13] 
     return country, postcode, loyal, gender,  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
         itemseason, productgroup, item , user
 
