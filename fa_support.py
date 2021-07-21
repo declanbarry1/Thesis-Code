@@ -74,6 +74,19 @@ def get_counter_batch(start_index, end_index):
     return  brand_id, category, colour, divisioncode, itemcategorycode, itemfamilycode, \
         itemseason, productgroup, user_emb_batch
 
+def get_counter_batch_items(start_index, end_index):
+    '''get counter examples'''
+    start_index = start_index % counter_size
+    end_index = end_index % counter_size
+    batch_data = counter_data[start_index: end_index]
+    item = [x[0] for x in batch_data]
+    counter_country = [x[1] for x in batch_data] 
+    counter_postcode = [x[2] for x in batch_data]
+    counter_gender = [x[3] for x in batch_data]
+    counter_loyalty = [x[4] for x in batch_data]
+    counter_items = [x[5] for x in batch_data]
+    item_emb_batch = item_emb_matrix[item]
+    return  counter_country, counter_postcode, counter_gender, counter_loyalty, counter_items, item_emb_batch 
     
 def get_testdata(start, end):
     '''get test samples'''
