@@ -5,10 +5,8 @@ Created on Fri Jul 16 17:00:31 2021
 @author: Declan
 """
 
-from orion_recommend.datasets import DatasetMap, synthetic, utils
 from orion.sources import S3Source
 from orion.sources.io import read_csv, write_csv
-from orion.sources import RedshiftSource
 import pandas as pd
 import numpy as np
 from scipy import sparse
@@ -242,8 +240,6 @@ for i in dic.keys():
         mat[m[0], m[1]] = 1
     print(mat[1])
     matrices.append(mat)
-
-user_atts_matrix.shape
 
 user_atts_matrix = np.concatenate((matrices), axis=1)
 
